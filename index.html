@@ -1,0 +1,148 @@
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0,
+        maximum-scale=1.0,minimum-scale=1.0,
+        width=device-width,user-scalable=no,minimal-ui">
+        <style>
+            @font-face{
+                font-family:"customFont";
+                src:url("assets/fonts/PaytoneOne-Regular.ttf");
+            }
+            .fontPreload{
+                font-family:"customFont";
+                position: absolute;
+                left:-100px;
+            }
+            .ratio_keeper {
+                position: relative;
+                margin-left: auto;
+                margin-right: auto;
+                width:80%;
+                padding-top: 40%;
+                }
+            iframe{
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                }
+        </style>
+        <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/android-chrome-192x192.png">
+        <link rel="icon" type="image/png" sizes="512x512" href="/assets/icons/android-chrome-512x512.png">
+        <link rel="manifest" href="/assets/icons/site.webmanifest">
+        <title>Neuroevolution Game</title>
+        <link href="bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    </head>
+    <body class="bg-secondary">
+        <div class="fontPreload">.</div>
+        <div class="container text-center my-5 bg-light">
+            <div class="ratio_keeper my-5">
+                <iframe
+                            class="my-5"
+                            title="showcase"
+                            frameborder="0"
+                            src="./content.html">
+                        </iframe>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 col-md-8 mx-auto">
+                    <h1 class="fw-bold my-2">Bunch of Mike Wazowskis fighting to the death</h1>
+                    <p>In most games, there are enemies that you need to defeat. 
+                        And I wondered, is it possible to train these enemies 
+                        to make the game even more interesting, unusual, more 
+                        difficult? In this post, I will tell you what questions 
+                        I encountered while answering this question.
+                    </p>
+                    <p>We will use, of course, neural networks. There are tons 
+                        of information on the internet about learning methods 
+                        for neural networks: q-learning, neuroevolution, policy 
+                        gradient methods. I settled on neuroevolution, as I 
+                        considered this solution the most elegant to start with.
+                    </p>
+                    <p>A few words about these round creatures that you can 
+                        observe on your screens. They can jump, move horizontally, 
+                        and dash left and right. Since they are round, let's call them roundies, 
+                        it seems to me that it will be easier). For their training, we will use 
+                        a neural network with one hidden layer. Information about 
+                        the battle is given as input: own coordinates, opponent's 
+                        coordinates, speeds, whether it is possible to dash, in 
+                        general, complete information about the battle.
+                        By the way, you can also play against them, click the play button above
+                        (W, A, D or arrow keys for movement, J, K or X, C for dashes).
+                    </p>
+                    <p>Neuroevolution, in a nutshell, works like this: there is a 
+                        group of neural networks that is being tested. 
+                        The best are selected, the worst are removed. 
+                        The parameters of the best crosses and passed 
+                        on to the next generation with minor changes 
+                        (mutations). The cycle is repeated. Thus, in 
+                        theory, in a few generations we will have neural 
+                        networks that cope with the task at an acceptable level.
+                    </p>
+                    <p>Anyway, back to learning. First, I divided the 
+                        roundies into two groups: right and left. 
+                        That is, there were two groups of neural 
+                        networks that competed with each other. 
+                        However, this approach turned out to be 
+                        inappropriate, since rather quickly one of the 
+                        groups began to gain the upper hand, while the other 
+                        could not overcome the barrier in the difference of forces.
+                    </p>
+                    <p>Then I left one group of neural networks and made 
+                        it so that the roundies in this group began to fight 
+                        against each other. Small digression: the roundies on 
+                        the left and on the right were still trained unevenly, 
+                        since they were initially in asymmetrical positions 
+                        for training. However, by flipping all the coordinates 
+                        for the right roundy about the vertical axis, this 
+                        proved to be super useful for training, since now 
+                        both the right and left roundy are trained on the same data. 
+                        For the system as a whole, both left and right creatures 
+                        turned out to be identical, in terms of learning.
+                        After each battle, I left only 
+                        the most well-upholstered thugs: those who killed 
+                        their opponent and at the same time remained alive. 
+                        This solved the previous problem, but a new one arose: 
+                        at some point, neural networks began to "degenerate". 
+                        Globally, since this whole system fought against itself, 
+                        at some point it stopped "trying". For 50-100 generations 
+                        everything went well, and then there was a deterioration. 
+                        However, the results were quite good. This problem 
+                        can be solved in the following way: just turn off 
+                        training when, for example, the following condition 
+                        is met: the number of selected creatures has become 
+                        equal to 40% of the entire population. At the beginning, 
+                        this figure was about 15%.
+                    </p>
+                    <p>For the next several days, I played around with different 
+                        parameters, figuring out how they affect the training 
+                        of roundies. Understood several interesting regularities. 
+                        For example, the more individuals in the population, the 
+                        better the learning occurs, since evolution can choose from 
+                        a larger number of parameters. The higher the mutation rate, 
+                        the faster and further from the original generation new changes 
+                        will occur, but too high a rate will lead to excessive, and 
+                        therefore undesirable, changes.
+                    </p>
+                    <p>In general, it was interesting. In the roundies box, 
+                        I trained them for about 50 generations, each 
+                        generation had 500 individuals. You can fight 
+                        them, try it! (W, A, D or arrow keys for movement, J, K or X, C for dashes).
+                        It turned out well, in my opinion. In the future, it will 
+                        be possible to improve movements, change animations, add 
+                        new types of attacks, and in general, change everything, 
+                        because there is no limit to fantasy. You can see the entire code on github. 
+                        I hope it was interesting to play game and to read this text. Bye!)
+                    </p>
+                    <h3 class="fw-bold my-2">My contacts:</h3>
+                    <a href="https://t.me/kurtetz" target="_blank" class="btn btn-dark fw-bold my-2">telegram</a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
