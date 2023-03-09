@@ -1,7 +1,7 @@
 
+
 export default class Preloader extends Phaser.Scene
 {
-    
     constructor()
     {
         super('Preloader');
@@ -43,14 +43,11 @@ export default class Preloader extends Phaser.Scene
             frames: scene.anims.generateFrameNumbers("tile", { start: 0, end: 5 }),
         });
         */
-
-        this.scene.start('Main');
+        this.time.delayedCall(1500,()=>{this.scene.start('Main')},[],this);
     }
 
     update()
     {
-
     }
 }
-
 
