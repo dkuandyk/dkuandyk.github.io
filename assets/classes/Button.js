@@ -25,18 +25,9 @@ export default class Button
                 this.container.setScale(1);
             }, this)
             .on('pointerdown', () => {
-                if(this.container.scaleX ===1.03)
-                {
-                    pressFunction();
-                    //this.scene.sounds.click.play();
-                    //реализуем функцию кнопки
-                    
-                }
+                pressFunction();
             }, this)
             .on('pointerup', () => {
-                if(this.container.scaleX ===0.97)
-                {
-                }
             }, this);
     }
 
