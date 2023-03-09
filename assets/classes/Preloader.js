@@ -43,7 +43,7 @@ export default class Preloader extends Phaser.Scene
             frames: scene.anims.generateFrameNumbers("tile", { start: 0, end: 5 }),
         });
         */
-        this.time.delayedCall(1500,()=>{this.scene.start('Main')},[],this);
+        this.time.delayedCall(100,()=>{this.scene.start('Main')},[],this);
     }
 
     update()
