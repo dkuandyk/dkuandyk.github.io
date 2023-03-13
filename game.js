@@ -1,6 +1,8 @@
 import Preloader from './assets/classes/Preloader.js'
 import Main from './assets/classes/Main.js'
 
+var isIOS = /iP[ao]d|iPhone/i.test(navigator.userAgent);
+
 let config = {
     type : Phaser.AUTO,
     renderer : isIOS ? Phaser.CANVAS : Phaser.AUTO,
