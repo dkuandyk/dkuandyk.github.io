@@ -3,6 +3,7 @@ import Main from './assets/classes/Main.js'
 
 let config = {
     type : Phaser.AUTO,
+    renderer : isIOS ? Phaser.CANVAS : Phaser.AUTO,
     width : 1200,
     height : 600,
     scale : {
