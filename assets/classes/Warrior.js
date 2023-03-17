@@ -141,19 +141,22 @@ export default class Warrior
                             //this.canDash=true;
                         }
                         this.isOnFloor=true;
-                        let bump=this.scene.sound.add('bump',{volume:0.3});
-                        bump.setDetune(-600+200*Math.random());
-                        let volume=Math.abs(this.physicBody.body.velocity.y/60);
-                        if(volume<0.05)
+                        if(this.alive)
                         {
-                            volume=0;
+                            let bump=this.scene.sound.add('bump',{volume:0.3});
+                            bump.setDetune(-600+200*Math.random());
+                            let volume=Math.abs(this.physicBody.body.velocity.y/60);
+                            if(volume<0.05)
+                            {
+                                volume=0;
+                            }
+                            else if(volume>0.1)
+                            {
+                                volume=0.1;
+                            }
+                            bump.setVolume(volume);
+                            bump.play();
                         }
-                        else if(volume>0.1)
-                        {
-                            volume=0.1;
-                        }
-                        bump.setVolume(volume);
-                        bump.play();
                     }
                 }
             })
@@ -259,7 +262,7 @@ export default class Warrior
                 }
                 if(this.alive)
                 {
-                    this.sounds.punch.setDetune(-200+500*Math.random());
+                    this.sounds.punch.setDetune(-500+200*Math.random());
                     this.sounds.punch.play();
                     this.destroy();
                 }
