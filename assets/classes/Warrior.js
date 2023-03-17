@@ -116,6 +116,14 @@ export default class Warrior
         console.log(this.physicBody)
         */
         
+        this.sounds=
+        {
+            swoosh:this.scene.sound.add('swoosh',{volume:0.3}),
+            punch:this.scene.sound.add('punch',{volume:0.3}),
+            jump:this.scene.sound.add('jump',{volume:0.3}),
+            bump:this.scene.sound.add('bump',{volume:0.3}),
+        };
+
         this.physicBody=this.scene.add.circle(this.x,this.y,40);
 
         this.scene.matter.add.gameObject(this.physicBody,{restitution:0.9, shape: { type: 'circle' } })
@@ -133,6 +141,19 @@ export default class Warrior
                             //this.canDash=true;
                         }
                         this.isOnFloor=true;
+                        let bump=this.scene.sound.add('bump',{volume:0.3});
+                        bump.setDetune(-600+200*Math.random());
+                        let volume=Math.abs(this.physicBody.body.velocity.y/60);
+                        if(volume<0.05)
+                        {
+                            volume=0;
+                        }
+                        else if(volume>0.1)
+                        {
+                            volume=0.1;
+                        }
+                        bump.setVolume(volume);
+                        bump.play();
                     }
                 }
             })
@@ -223,7 +244,7 @@ export default class Warrior
                 }
             });
         */
-        
+
     }
 
     setEnemy(enemy)
@@ -238,6 +259,8 @@ export default class Warrior
                 }
                 if(this.alive)
                 {
+                    this.sounds.punch.setDetune(-200+500*Math.random());
+                    this.sounds.punch.play();
                     this.destroy();
                 }
             }
@@ -393,6 +416,10 @@ export default class Warrior
             this.sword.setVisible(true);
 
             this.sword.rotation=direction;
+
+            this.sounds.swoosh.setDetune(-400+400*Math.random());
+            this.sounds.swoosh.play();
+            //this.scene.sound.play('swoosh');
 
             this.physicBody.setVelocityX(3.8*this.maxSpeed*Math.cos(this.sword.rotation));
             this.physicBody.setVelocityY(3.8*this.maxSpeed*Math.sin(this.sword.rotation));
@@ -578,6 +605,8 @@ export default class Warrior
                 {
                     if(this.isOnFloor)
                         {
+                            this.sounds.swoosh.setDetune(-800+300*Math.random());
+                            this.sounds.swoosh.play();
                             this.physicBody.setVelocityY(-30);
                         }
                 }

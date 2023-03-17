@@ -15,7 +15,7 @@ export default class Main extends Phaser.Scene
     {
         this.warriors=[];
         this.walhalla=[];
-
+        
         this.cols=1;
         this.rows=1;
 

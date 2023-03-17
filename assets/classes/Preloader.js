@@ -32,6 +32,11 @@ export default class Preloader extends Phaser.Scene
         this.load.image('restart', 'assets/sprites/restart.png');
         this.load.image('play', 'assets/sprites/play.png');
         this.load.image('stop', 'assets/sprites/stop.png');
+
+        this.load.audio('swoosh', 'assets/sounds/swoosh.wav');
+        this.load.audio('punch', 'assets/sounds/punch.wav');
+        this.load.audio('jump', 'assets/sounds/jump.wav');
+        this.load.audio('bump', 'assets/sounds/bump.wav');
     }
 
     create()
@@ -43,6 +48,7 @@ export default class Preloader extends Phaser.Scene
             frames: scene.anims.generateFrameNumbers("tile", { start: 0, end: 5 }),
         });
         */
+        
         this.time.delayedCall(100,()=>{this.scene.start('Main')},[],this);
     }
 
