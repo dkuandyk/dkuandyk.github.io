@@ -48,7 +48,7 @@ export default class Main extends Phaser.Scene
         
         this.createPresentation();
 
-        let playButton=new Button(this,0,-320,()=>{
+        let playButton=new Button(this,-240,-320,()=>{
             if(this.gameMode==="presentation")
             {
                 this.gameMode="game";
@@ -65,27 +65,53 @@ export default class Main extends Phaser.Scene
                 });
             }
         },'play');
-        let restartButton=new Button(this,-160,-320,()=>{
+        let restartButton=new Button(this,-80,-320,()=>{
             this.scene.restart();
         },'restart');
-        let enlargeButton=new Button(this,160,-320,()=>{
+        let enlargeButton=new Button(this,80,-320,()=>{
             if (this.scale.isFullscreen) {
                 this.scale.stopFullscreen();
+                enlargeButton.image.setTexture("enlarge");
             }
             else
             {
                 this.scale.startFullscreen();
+                enlargeButton.image.setTexture("enmin");
             }
         },'enlarge');
 
-        this.killsCounter = this.add.text(-850, -400, "score : 0", {font: "100px customFont"})
+        this.sound.mute=true;
+        let soundButton=new Button(this,240,-320,()=>{
+            if(this.sound.mute)
+            {
+                this.sound.mute=false;
+                soundButton.image.setTexture("soundOn");
+            }
+            else
+            {
+                this.sound.mute=true;
+                soundButton.image.setTexture("soundOff");
+            }
+        },'soundOff');
+
+        this.scale.on('resize',()=>{
+            if (this.scale.isFullscreen) {
+                enlargeButton.image.setTexture("enmin");
+            }
+            else
+            {
+                enlargeButton.image.setTexture("enlarge");
+            }
+        });
+
+        this.killsCounter = this.add.text(-850, -400, "score : 0", {font: "90px customFont"})
             .setOrigin(0,0)
             .setDepth(100)
             .setTint(0x1e1e1e)
             .setVisible(false)
             .setScale(0.01);
         this.killsCounter.score=0;
-        this.killsRecord = this.add.text(850, -400, "record : 0", {font: "100px customFont"})
+        this.killsRecord = this.add.text(850, -400, "record : 0", {font: "90px customFont"})
             .setOrigin(1,0)
             .setDepth(100)
             .setTint(0x1e1e1e)
