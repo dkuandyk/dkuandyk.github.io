@@ -65,9 +65,13 @@ export default class Main extends Phaser.Scene
                 });
             }
         },'play');
+
         let restartButton=new Button(this,-80,-320,()=>{
+            //this.scene.stop("Main");
+            //this.scene.start("Preloader");
             this.scene.restart();
         },'restart');
+
         let enlargeButton=new Button(this,80,-320,()=>{
             if (this.scale.isFullscreen) {
                 this.scale.stopFullscreen();
@@ -93,16 +97,6 @@ export default class Main extends Phaser.Scene
                 soundButton.image.setTexture("soundOff");
             }
         },'soundOff');
-
-        this.scale.on('resize',()=>{
-            if (this.scale.isFullscreen) {
-                enlargeButton.image.setTexture("enmin");
-            }
-            else
-            {
-                enlargeButton.image.setTexture("enlarge");
-            }
-        });
 
         this.killsCounter = this.add.text(-850, -400, "score : 0", {font: "90px customFont"})
             .setOrigin(0,0)

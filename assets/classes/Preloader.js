@@ -28,9 +28,9 @@ export default class Preloader extends Phaser.Scene
         this.load.image('knife', 'assets/sprites/knife.png');
         this.load.image('sword', 'assets/sprites/sword.png');
         this.load.image('mark', 'assets/sprites/mark.png');
-        this.load.image('enlarge', 'assets/sprites/enlarge.png');
-        this.load.image('restart', 'assets/sprites/restart.png');
         this.load.image('play', 'assets/sprites/play.png');
+        this.load.image('restart', 'assets/sprites/restart.png');
+        this.load.image('enlarge', 'assets/sprites/enlarge.png');
         this.load.image('enmin', 'assets/sprites/enmin.png');
         this.load.image('soundOn', 'assets/sprites/soundOn.png');
         this.load.image('soundOff', 'assets/sprites/soundOff.png');
@@ -39,6 +39,8 @@ export default class Preloader extends Phaser.Scene
         this.load.audio('punch', 'assets/sounds/punch.wav');
         this.load.audio('jump', 'assets/sounds/jump.wav');
         this.load.audio('bump', 'assets/sounds/bump.wav');
+
+        this.load.once('complete',()=>{this.scene.start('Main')},this);
     }
 
     create()
@@ -51,7 +53,6 @@ export default class Preloader extends Phaser.Scene
         });
         */
         this.sound.unlock();
-        this.time.delayedCall(100,()=>{this.scene.start('Main')},[],this);
     }
 
     update()
