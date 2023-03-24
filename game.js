@@ -6,6 +6,7 @@ var isIOS = /iP[ao]d|iPhone/i.test(navigator.userAgent);
 let config = {
     type : Phaser.AUTO,
     renderer : isIOS ? Phaser.CANVAS : Phaser.AUTO,
+    //pixelArt:true,
     width : 1200,
     height : 600,
     scale : {

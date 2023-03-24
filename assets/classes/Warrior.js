@@ -28,7 +28,6 @@ export default class Warrior
         this.keyLeft=false;
         this.keyUp=false;
 
-
         let colors=[0x003CC7,0xC70000,0xC76000,0x6100C7,0xC700BB];
         this.color=colors[Math.floor(colors.length*Math.random())];
 
@@ -115,15 +114,15 @@ export default class Warrior
             });
         console.log(this.physicBody)
         */
-        
+        /*
         this.sounds=
         {
             swoosh:this.scene.sound.add('swoosh',{volume:0.3}),
             punch:this.scene.sound.add('punch',{volume:0.3}),
             jump:this.scene.sound.add('jump',{volume:0.3}),
             bump:this.scene.sound.add('bump',{volume:0.3}),
-        };
-
+        };*/
+        
         this.physicBody=this.scene.add.circle(this.x,this.y,40);
 
         this.scene.matter.add.gameObject(this.physicBody,{restitution:0.9, shape: { type: 'circle' } })
@@ -143,8 +142,6 @@ export default class Warrior
                         this.isOnFloor=true;
                         if(this.alive)
                         {
-                            let bump=this.scene.sound.add('bump',{volume:0.3});
-                            bump.setDetune(-600+200*Math.random());
                             let volume=Math.abs(this.physicBody.body.velocity.y/60);
                             if(volume<0.05)
                             {
@@ -154,8 +151,7 @@ export default class Warrior
                             {
                                 volume=0.1;
                             }
-                            bump.setVolume(volume);
-                            bump.play();
+                            this.scene.sound.play('bump',{volume:volume,detune:-600+200*Math.random()});
                         }
                     }
                 }
@@ -262,8 +258,8 @@ export default class Warrior
                 }
                 if(this.alive)
                 {
-                    this.sounds.punch.setDetune(-500+200*Math.random());
-                    this.sounds.punch.play();
+                    //this.sounds.punch.setDetune(-500+200*Math.random());
+                    this.scene.sound.play('punch',{volume:0.3,detune:-500+200*Math.random()});
                     this.destroy();
                 }
             }
@@ -420,8 +416,9 @@ export default class Warrior
 
             this.sword.rotation=direction;
 
-            this.sounds.swoosh.setDetune(-400+400*Math.random());
-            this.sounds.swoosh.play();
+            //this.sounds.swoosh.setDetune(-400+400*Math.random());
+            this.scene.sound.play('swoosh',{volume:0.3,detune:-400+400*Math.random()});
+           // this.sounds.swoosh.play();
             //this.scene.sound.play('swoosh');
 
             this.physicBody.setVelocityX(3.8*this.maxSpeed*Math.cos(this.sword.rotation));
@@ -608,13 +605,14 @@ export default class Warrior
                 {
                     if(this.isOnFloor)
                         {
-                            this.sounds.swoosh.setDetune(-800+300*Math.random());
-                            this.sounds.swoosh.play();
+                            //this.sounds.swoosh.setDetune(-800+300*Math.random());
+                            //this.sounds.swoosh.play();
+                            this.scene.sound.play('swoosh',{volume:0.3,detune:-800+300*Math.random()});
                             this.physicBody.setVelocityY(-30);
                         }
                 }
             }
-            
+                        
             this.sword.setPosition(24*Math.cos(this.sword.rotation)+this.physicBody.x+this.sword.len*Math.cos(this.sword.rotation),24*Math.sin(this.sword.rotation)+this.physicBody.y+this.sword.len*Math.sin(this.sword.rotation));
 
             this.container.setPosition(this.physicBody.x,this.physicBody.y);
