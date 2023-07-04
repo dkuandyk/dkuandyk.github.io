@@ -8,11 +8,14 @@ class Evolution
         this.populationSize=config.populationSize||500;
         this.mutationRate=config.mutationRate||0.1;
         this.sliceRate=config.sliceRate||0.3;
-        this.usePrevious=config.usePrevious||false;
-        this.generation=0;
+        this.usePrevious=config.usePrevious;
+        this.generation=1;
         
         this.networks=[];
         this.currentBests=[];
+
+        this.typeOfCreature=['hunter','prey','kamikaze'][Math.floor(3*Math.random())];
+        this.typeOfCreature='hunter';
 
         if(this.usePrevious)
         {
@@ -31,58 +34,28 @@ class Evolution
 
     createFromStorage()
     {
-        let temporaryNetworkStorage=this.scene.game.data;
-
-        /*
-        let species=this.getSpecies();
-
-        for(let i of species)
-        {
-            let networksToAdd=this.getBests(i,i.length*0.3);
-
-            for(let j of networksToAdd)
-            {
-                temporaryNetworkStorage.push(j);
-            }
-        }
-        
-        temporaryNetworkStorage=this.getBests(temporaryNetworkStorage,this.populationSize*0.3);
-        */
-
-        //temporaryNetworkStorage=this.getBests(this.networks,this.populationSize*this.sliceRate);
+        let temporaryNetworkStorage=this.usePrevious;
 
         this.networks=[];
 
-        loop:
-        while(true)
+        //loop:
+        //while(true)
+        //console.log(temporaryNetworkStorage)
+        for(let i=0;i<temporaryNetworkStorage.length;i++)
         {
-            temporaryNetworkStorage=this.shuffle(temporaryNetworkStorage);
-            for(let i=0;i<temporaryNetworkStorage.length-2;i+=2)
-            {
-                let parent1=temporaryNetworkStorage[i];
-                let parent2=temporaryNetworkStorage[i+1];
-
-                let averageFitness=(parent1.fitness+parent2.fitness)/2;
-
-                let brain=this.crossover(parent1.weights,parent2.weights);
-
-                if(Math.random()<0.8)
-                {
-                    //brain=this.mutate(brain,Math.min(this.mutationRate,Math.abs(averageFitness)*0.01));
-                    brain=this.mutate(brain,this.mutationRate);
-                }
-
-                let network=new Network(brain);
-
-                this.networks.push(network);
-
-                if(this.networks.length>=this.populationSize)
-                {
-                    break loop;
-                }
-            }
+            let brain=temporaryNetworkStorage[i].weights;
             
+            let network=new Network(brain);
+
+            this.networks.push(network);
+
+            //if(this.networks.length>=this.populationSize)
+            {
+                //break loop;
+            }
         }
+            
+        
 
         this.generation+=1;
     }
@@ -109,7 +82,10 @@ class Evolution
 
         //temporaryNetworkStorage=this.getBests(this.networks,this.populationSize*this.sliceRate);
         
+        //temporaryNetworkStorage=this.getBests(this.networks,this.sliceRate);
+
         temporaryNetworkStorage=this.getTopTier(this.networks);
+
         this.currentBests=temporaryNetworkStorage;
 
         this.networks=[];
@@ -117,24 +93,23 @@ class Evolution
         loop:
         while(true)
         {
-            temporaryNetworkStorage=this.shuffle(temporaryNetworkStorage);
+            temporaryNetworkStorage=shuffle(temporaryNetworkStorage);
             for(let i=0;i<temporaryNetworkStorage.length-2;i+=2)
             {
                 let parent1=temporaryNetworkStorage[i];
                 let parent2=temporaryNetworkStorage[i+1];
 
-                let averageFitness=(parent1.fitness+parent2.fitness)/2;
-
                 let brain=this.crossover(parent1.weights,parent2.weights);
 
-                if(Math.random()<0.8)
+                if(Math.random()<0.9)
                 {
                     //brain=this.mutate(brain,Math.min(this.mutationRate,Math.abs(averageFitness)*0.01));
-                    brain=this.mutate(brain,this.mutationRate);
+                    //brain=this.mutate(brain,Math.max(this.mutationRate-(this.generation/500),0.01));
+                    brain=this.mutate(brain,Math.max(this.mutationRate,0.01));
                 }
 
                 let network=new Network(brain);
-
+                network.typeOfCreature=this.typeOfCreature;
                 this.networks.push(network);
 
                 if(this.networks.length>=this.populationSize)
@@ -163,12 +138,30 @@ class Evolution
         let networksToAdd=[];
         let topTier=[];
         let secondTier=[];
+        let thirdTier=[];
+        let fourthTier=[];
         let maxFitness=-Infinity;
+        let secondMaxFitness=-Infinity;
+        let thirdMaxFitness=-Infinity;
+        let fourthMaxFitness=-Infinity;
+
         for(let j of networks)
         {
-            if(j.fitness>maxFitness)
+            if(j.fitness>=maxFitness)
             {
                 maxFitness=j.fitness;
+            }
+            else if(j.fitness>=secondMaxFitness)
+            {
+                secondMaxFitness=j.fitness;
+            }
+            else if(j.fitness>=thirdMaxFitness)
+            {
+                thirdMaxFitness=j.fitness;
+            }
+            else if(j.fitness>=fourthMaxFitness)
+            {
+                fourthMaxFitness=j.fitness;
             }
         }
         for(let j of networks)
@@ -177,52 +170,101 @@ class Evolution
             {
                 topTier.push(j);
             }
-            else
+            else if(j.fitness===secondMaxFitness)
             {
                 secondTier.push(j);
             }
+            else if(j.fitness===thirdMaxFitness)
+            {
+                thirdTier.push(j);
+            }
+            else if(j.fitness===fourthMaxFitness)
+            {
+                fourthTier.push(j);
+            }
         }
         
-        for(let j of topTier)
+        if(this.typeOfCreature==='hunter')
         {
-            networksToAdd.push(j);
+            for(let j of topTier)
+            {
+                networksToAdd.push(j);
+            }
+    
+            for(let j=0;j<Math.min(topTier.length*0.5,secondTier.length);j++)
+            {
+                networksToAdd.push(secondTier[j]);
+            }
+            
+            for(let j=0;j<Math.min(topTier.length*0.3,thirdTier.length);j++)
+            {
+                networksToAdd.push(thirdTier[j]);
+            }
+            
+            for(let j=0;j<Math.min(topTier.length*0.1,fourthTier.length);j++)
+            {
+                networksToAdd.push(fourthTier[j]);
+            }
         }
-
-        /*
-        for(let j=0;j<Math.max(1,Math.min(topTier.length*0.3,secondTier.length));j++)
+        else if(this.typeOfCreature==='prey')
         {
-            networksToAdd.push(secondTier[j]);
+            for(let j of secondTier)
+            {
+                networksToAdd.push(j);
+            }
+    
+            for(let j=0;j<Math.min(secondTier.length*0.5,topTier.length);j++)
+            {
+                networksToAdd.push(topTier[j]);
+            }
+            
+            for(let j=0;j<Math.min(secondTier.length*0.3,thirdTier.length);j++)
+            {
+                networksToAdd.push(thirdTier[j]);
+            }
+            
+            for(let j=0;j<Math.min(secondTier.length*0.1,fourthTier.length);j++)
+            {
+                networksToAdd.push(fourthTier[j]);
+            }
         }
-        */
-
+        else if(this.typeOfCreature==='kamikaze')
+        {
+            for(let j of thirdTier)
+            {
+                networksToAdd.push(j);
+            }
+    
+            for(let j=0;j<Math.min(thirdTier.length*0.5,topTier.length);j++)
+            {
+                networksToAdd.push(topTier[j]);
+            }
+            
+            for(let j=0;j<Math.min(thirdTier.length*0.3,secondTier.length);j++)
+            {
+                networksToAdd.push(secondTier[j]);
+            }
+            
+            for(let j=0;j<Math.min(thirdTier.length*0.1,fourthTier.length);j++)
+            {
+                networksToAdd.push(fourthTier[j]);
+            }
+        }
+        
         return networksToAdd;
     }
 
     getBests(networks,numberOfNecessary)
     {
         let networksToAdd=[];
-        for(let j=0;j<networks.length;j++)
+        
+        networks=quickSort(networks);
+
+        for(let i=0;i<networks.length*numberOfNecessary;i++)
         {
-            if(j<numberOfNecessary)
-            {
-                networksToAdd.push(networks[j]);
-            }
-            else
-            {
-                let worstOfAddedId=0;
-                for(let k=1;k<networksToAdd.length;k++)
-                {
-                    if(networksToAdd[k].fitness<networksToAdd[worstOfAddedId].fitness)
-                    {
-                        worstOfAddedId=k;
-                    }
-                }
-                if(networksToAdd[worstOfAddedId].fitness<networks[j].fitness)
-                {
-                    networksToAdd[worstOfAddedId]=networks[j];
-                }
-            }
+            networksToAdd.push(networks.pop());
         }
+
         return networksToAdd;
     }
 
@@ -300,13 +342,14 @@ class Evolution
                 let row=[];
                 for(let j=0;j<a[k]+1;j++)
                 {
-                    if(Math.random()<0.9)
+                    if(Math.random()<0.95)
                         {
-                            row.push(-2+4*Math.random());
+                            row.push(-1+2*Math.random());
                         }
                         else
                         {
-                            row.push(-999);
+                            row.push(-10+20*Math.random());
+                            //row.push(-9999999999);
                         }
                 }
                 rows.push(row);
@@ -356,13 +399,14 @@ class Evolution
                 {
                     if(Math.random()<randomness)
                     {
-                        if(Math.random()<0.9)
+                        if(Math.random()<0.95)
                         {
                             cols.push(a[i][j][k]-1+2*Math.random());
                         }
                         else
                         {
-                            cols.push(-999);
+                            cols.push(-10+20*Math.random());
+                            //cols.push(-9999999999);
                         }
                     }
                     else
@@ -413,25 +457,6 @@ class Evolution
         return a;
         */
     }
-
-    shuffle(array)
-    {
-        let currentIndex = array.length,  randomIndex;
-    
-        // While there remain elements to shuffle.
-        while (currentIndex != 0) {
-    
-        // Pick a remaining element.
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex--;
-    
-        // And swap it with the current element.
-        [array[currentIndex], array[randomIndex]] = [
-            array[randomIndex], array[currentIndex]];
-        }
-    
-        return array;
-    }
 }
 
 class Network
@@ -469,7 +494,7 @@ class Network
     addFitness(fitness)
     {
         if(this.fitness===-Infinity)
-        {
+        {            
             this.fitness=fitness;
         }
         else
@@ -494,13 +519,121 @@ class Network
         for(let i=0;i<a.length;i++)
         {
             let sum=0;
+            let ifOutBoundsK=1;
             for(let j=0;j<a[i].length;j++)
             {
                 sum+=a[i][j]*b[j];
+                /*
+                if(Math.abs(a[i][j])>9999999 || Math.abs(b[j])>9999999)
+                {
+                    ifOutBoundsK=0;
+                }
+            */
             }
+            //sum*=ifOutBoundsK;
             c.push(sum);
         }
         return c;
     }
 
+}
+
+
+async function readTextFile(filename)
+{
+    let arrayToReturn=[];
+    fetch("./"+filename)
+    .then((response) => {
+        let text=response.text();
+        return text;
+    })
+    .then((text) => {
+        let array=JSON.parse(text);
+        return array;
+    }).then((array) => {
+        for(let i of array)
+        {
+            arrayToReturn.push(i);
+        }
+        //return arrayToReturn;
+    });
+    return arrayToReturn
+}
+
+async function readTextFile1(filename) {
+    let url = "./"+filename;
+    try {
+        let res = await fetch(url);
+        let text=await res.text();
+        let array=await JSON.parse(text);
+        return array;
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+function removeItemOnce(arr, value)
+{
+    var index = arr.indexOf(value);
+    if (index > -1) {
+        arr.splice(index, 1);
+    }
+    //return arr;
+}
+
+function quickSort(arr) {
+    if (arr.length < 2) return arr;
+    let pivot = arr[0];
+    const left = [];
+    const right = [];
+      
+    for (let i = 1; i < arr.length; i++) {
+      if (pivot.fitness > arr[i].fitness) {
+        left.push(arr[i]);
+      } else {
+        right.push(arr[i]);
+      }
+    }
+    return quickSort(left).concat(pivot, quickSort(right));
+  }
+
+function shuffle(array)
+{
+    let currentIndex = array.length,  randomIndex;
+
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+
+    return array;
+}
+
+function antiLerp(start,end,value)
+{
+    let t=(value-start)/(end-start);
+    return t;
+}
+
+   
+function download(filename, text)
+{
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+  
+    element.style.display = 'none';
+    document.body.appendChild(element);
+  
+    element.click();
+  
+    document.body.removeChild(element);
 }

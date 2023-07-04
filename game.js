@@ -1,5 +1,9 @@
 import Preloader from './assets/classes/Preloader.js'
 import Main from './assets/classes/Main.js'
+import Guess1 from './assets/classes/Guess1.js'
+import Guess2 from './assets/classes/Guess2.js'
+import Guess3 from './assets/classes/Guess3.js'
+import Memory5 from './assets/classes/Memory5.js'
 
 var isIOS = /iP[ao]d|iPhone/i.test(navigator.userAgent);
 
@@ -8,10 +12,10 @@ let config = {
     renderer : isIOS ? Phaser.CANVAS : Phaser.AUTO,
     //pixelArt:true,
     width : 1200,
-    height : 600,
+    height : 675,
     scale : {
         mode : Phaser.Scale.FIT,
-        autoCenter : Phaser.Scale.CENTER_BOTH
+        autoCenter : Phaser.Scale.CENTER_BOTH,
     },
     physics: {
         default: 'matter',
@@ -22,8 +26,10 @@ let config = {
             },
         }
     },
+    //backgroundColor : 0xf5f5f5,
     backgroundColor : 0xffffff,
-    scene : [Preloader, Main],
+    //backgroundColor : 0xdee3ff,
+    scene : [Preloader, Main, Guess1, Guess2, Guess3, Memory5],
 }
 
 
@@ -41,3 +47,12 @@ localStorage.setItem(
     JSON.stringify(Game.data)
     );
 };
+
+var GlobalResize=()=>{
+    console.log('resized');
+}
+
+window.addEventListener('resize', () => {
+    GlobalResize();
+}, false);
+
