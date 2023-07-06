@@ -8,8 +8,10 @@ import Memory5 from './assets/classes/Memory5.js'
 var isIOS = /iP[ao]d|iPhone/i.test(navigator.userAgent);
 
 let config = {
-    type : Phaser.AUTO,
-    renderer : isIOS ? Phaser.CANVAS : Phaser.AUTO,
+    type : isIOS ? Phaser.CANVAS : Phaser.AUTO,
+    render : {
+        desynchronized:true,
+    },
     //pixelArt:true,
     width : 1200,
     height : 675,
