@@ -37,7 +37,9 @@ export default class PresentationManager
         console.log(this.slicedClusters);
         */
         
-        let playButton=new Button(this.scene,0,0,()=>{
+        this.instructions = scene.add.image(-70, 0, 'instructions');
+
+        let playButton=new Button(this.scene,0,70,()=>{
             
             this.createGame();
             playButton.destroy();
@@ -50,7 +52,57 @@ export default class PresentationManager
                 ease:"Back.Out"
             });
 
+            this.scene.tweens.add({
+                targets:this.instructions,
+                scale:0,
+                duration:500,
+                ease:'Back.In',
+                onComplete:()=>{
+                    this.instructions.destroy();
+            }});
+
         },'play');
+
+        let enlargeButton=new Button(this.scene,-160,-320,()=>{
+            if (this.scene.scale.isFullscreen)
+            {
+                enlargeButton.image.setTexture('enlarge');
+            }
+            else
+            {
+                enlargeButton.image.setTexture('enmin');
+            }
+            this.scene.scale.toggleFullscreen();
+        },'enlarge');
+
+        if (this.scene.scale.isFullscreen)
+        {
+            enlargeButton.image.setTexture('enmin');
+        }
+        else
+        {
+            enlargeButton.image.setTexture('enlarge');
+        }
+
+        let restartButton=new Button(this.scene,0,-320,()=>{
+            //this.scene.stop("Main");
+            //this.scene.start("Preloader");
+            this.scene.scene.restart();
+        },'restart');
+
+        this.scene.sound.mute=false;
+        let soundButton=new Button(this.scene,160,-320,()=>{
+            if(this.scene.sound.mute)
+            {
+                this.scene.sound.mute=false;
+                soundButton.image.setTexture("soundOn");
+            }
+            else
+            {
+                this.scene.sound.mute=true;
+                soundButton.image.setTexture("soundOff");
+            }
+        },'soundOn');
     }
 
     clearWarriors()
@@ -100,10 +152,8 @@ export default class PresentationManager
             this.warriors.push(w);
         }
         else
-        {
-            let allClusters=Q;
-            let clusterToUse=allClusters[Math.floor(allClusters.length*Math.random())];
-            clusterToUse=B;
+        {            
+            let clusterToUse=B;
             let wbn=Math.floor(Math.random()*clusterToUse.length);
             let enemyBrain=new Network(clusterToUse[wbn].weights);
             
@@ -141,10 +191,8 @@ export default class PresentationManager
     createGame()
     {
         this.scene.cameras.main.zoom=0.6;
-        let allClusters=Q;
-        //console.log(allClusters)
-        let clusterToUse=allClusters[Math.floor(allClusters.length*Math.random())];
-        clusterToUse=B;
+        
+        let clusterToUse=B;
 
         let wbn=Math.floor(Math.random()*clusterToUse.length);
         let brain=new Network(clusterToUse[wbn].weights);

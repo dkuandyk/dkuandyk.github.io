@@ -63,6 +63,7 @@ export default class Preloader extends Phaser.Scene
         this.load.image('enmin', 'assets/sprites/enmin.png');
         this.load.image('soundOn', 'assets/sprites/soundOn.png');
         this.load.image('soundOff', 'assets/sprites/soundOff.png');
+        this.load.image('instructions', 'assets/sprites/instructions.png');
 
         this.load.audio('swoosh', 'assets/sounds/swoosh.wav');
         this.load.audio('punch', 'assets/sounds/punch.wav');
