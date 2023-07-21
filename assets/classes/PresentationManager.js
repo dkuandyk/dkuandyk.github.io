@@ -101,12 +101,10 @@ export default class PresentationManager
         }
         else
         {
-            this.numba+=1;
             let allClusters=Q;
             let clusterToUse=allClusters[Math.floor(allClusters.length*Math.random())];
             clusterToUse=B;
             let wbn=Math.floor(Math.random()*clusterToUse.length);
-            console.log(this.numba);
             let enemyBrain=new Network(clusterToUse[wbn].weights);
             
             //console.log(clusterToUse[wbn].typeOfCreature);
@@ -233,13 +231,13 @@ export default class PresentationManager
         this.killsRecord.setText("record : "+this.killsRecord.record);
     }
     
-    update()
+    update(time,dt)
     {
         let centerX=0;
         let centerY=0;
         for(let i of this.warriors)
         {
-            i.update();
+            i.update(time,dt);
             //centerX+=i.physicBody.x/this.warriors.length;
             //centerY+=i.physicBody.y/this.warriors.length;
         }

@@ -61,19 +61,19 @@ export default class Main extends Phaser.Scene
     {
         if(this.trainingManager)
         {
-            this.trainingManager.update();
+            this.trainingManager.update(time,dt);
         }
         else if(this.presentationManager)
         {
-            this.presentationManager.update();
+            this.presentationManager.update(time,dt);
         }
         else if(this.tournierManager)
         {
-            this.tournierManager.update();
+            this.tournierManager.update(time,dt);
         }
         else if(this.guessManager)
         {
-            this.guessManager.update(dt);
+            this.guessManager.update(time,dt);
         }
     }
 }

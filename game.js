@@ -16,8 +16,12 @@ let config = {
     width : 1200,
     height : 675,
     scale : {
-        mode : Phaser.Scale.FIT,
+        mode : Phaser.Scale.ENVELOP,
         autoCenter : Phaser.Scale.CENTER_BOTH,
+    },
+    fps:{
+        //target:60,
+        //forceSetTimeOut:true,
     },
     physics: {
         default: 'matter',

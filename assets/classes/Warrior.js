@@ -353,8 +353,10 @@ export default class Warrior
         }
     }
 
-    update()
+    update(time,dt)
     {
+        //this.currentDeltaTime=dt;
+
         if(this.brain)
         {
             this.thinkAndAct();
