@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dauren Kuandyk Portfolio</title>
+<style>
+  :root { --bg:#0a0a0a; --fg:#f5f5f5; --acc:#00bfff; --card:#161616; --border:#222; }
+  * { box-sizing:border-box }
+  html,body {
+    margin:0;
+    background:var(--bg);
+    color:var(--fg);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  }
+  h1 { text-align:center; font-size:2rem; margin:28px 12px 8px }
+  h2 { text-align:center; font-size:1.25rem; margin:40px 12px 16px;
+    color:var(--acc); letter-spacing:.5px; text-transform:uppercase }
+  .grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+    gap:20px;
+    justify-content:center;
+    padding:12px;
+    max-width:1100px;
+    margin:0 auto 28px;
+    contain:content;
+  }
+  @media (min-width:1100px) {
+    .grid { grid-template-columns:repeat(3, 1fr); }
+  }
+
+  .card {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    overflow:hidden;
+    transition:transform .18s ease, box-shadow .18s ease;
+    will-change:transform;
+  }
+  .card:hover { transform:translateY(-2px); box-shadow:0 10px 25px rgba(0,0,0,.35) }
+
+  .thumb {
+    display: block;
+    /* Жёсткая высота + соотношение 16:9 → ширина подстроится */
+    height: 260px;          /* ← поменяй под вкус (например, 280–320px) */
+    aspect-ratio: 16 / 9;
+    width: auto;
+    max-width: 100%;
+    object-fit: cover;
+  }
+  .title {
+    padding:10px 12px;
+    font-weight:600;
+    border-top:1px solid var(--border);
+    background:#101010;
+  }
+  a.link { color:inherit; text-decoration:none }
+  a.link:hover .title { color:var(--acc) }
+
+  /* Playable placeholders 9:16 ratio (vertical) */
+  .playable {
+    position: relative;
+    /* Фиксируем высоту, чтобы точно изменилось визуально */
+    height: 620px;          /* ← поставь 420/480/540 по желанию */
+    aspect-ratio: 9 / 16;   /* 1080×1920 */
+    width: auto;            /* ширина = height * 9/16 */
+    max-width: 100%;        /* чтобы не вылезало из карточки */
+    margin: 0 auto;
+
+    background:#0e0e0e;
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+  }
+  .grid.playables {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 1100px;
+    margin: 0 auto 28px;
+    padding: 12px;
+  }
+  @media (max-width: 1100px) {
+    .grid.playables { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 740px) {
+    .grid.playables { grid-template-columns: 1fr; }
+  }
+  .poster {
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    filter:brightness(0.3) contrast(0.75);
+  }
+  .overlay {
+    position:relative;
+    z-index:1;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+  button {
+    cursor:pointer;
+    border:none;
+    border-radius:10px;
+    padding:10px 14px;
+    background:var(--acc);
+    color:#001018;
+    font-weight:700;
+    box-shadow:0 4px 14px rgba(0,191,255,.25);
+  }
+  button.secondary {
+    background:#202020;
+    color:#ddd;
+    border:1px solid #2b2b2b;
+    box-shadow:none;
+  }
+  iframe { width:100%; height:100%; border:0; display:block }
+</style>
+</head>
+<body>
+
+<h1>Dauren Kuandyk Portfolio</h1>
+
+<!-- Azerion Games -->
+<h2>My Azerion Games</h2>
+<div class="grid">
+  <div class="card">
+    <a class="link" href="https://www.spel.nl/spel/shop-sorting-xmas" target="_blank" rel="noopener">
+      <img class="thumb" loading="lazy"
+           src="images/sorting_xmas.png" alt="Shop Sorting Xmas">
+      <div class="title">Shop Sorting Xmas</div>
+    </a>
+  </div>
+  <div class="card">
+    <a class="link" href="https://www.spel.nl/spel/block-crasher" target="_blank" rel="noopener">
+      <img class="thumb" loading="lazy"
+           src="images/block_crasher.png" alt="Block Crasher">
+      <div class="title">Block Crasher</div>
+    </a>
+  </div>
+  <div class="card">
+    <a class="link" href="https://www.spel.nl/spel/vex-hyper-dash" target="_blank" rel="noopener">
+      <img class="thumb" loading="lazy"
+           src="images/hyper_dash.png" alt="Vex Hyper Dash">
+      <div class="title">Vex Hyper Dash</div>
+    </a>
+  </div>
+</div>
+
+<!--My Own Games -->
+<h2>My Own Games</h2>
+<div class="grid">
+  <div class="card">
+    <a class="link" href="https://store.steampowered.com/app/2900490/Overflower/" target="_blank" rel="noopener">
+      <img class="thumb" loading="lazy"
+           src="images/overflower.png" alt="Overflower">
+      <div class="title">Overflower Steam Game</div>
+    </a>
+  </div>
+  <div class="card">
+    <a class="link" href="https://store.steampowered.com/app/2705500/Apple_Hero/" target="_blank" rel="noopener">
+      <img class="thumb" loading="lazy"
+           src="images/apple_hero.png" alt="Apple Hero">
+      <div class="title">Apple Hero Steam Game</div>
+    </a>
+  </div>
+  <div class="card">
+    <a class="link" href="https://store.steampowered.com/app/3922790/Pale_Lies/" target="_blank" rel="noopener">
+      <img class="thumb" loading="lazy"
+           src="images/pale_lies.png" alt="Pale Lies">
+      <div class="title">Pale Lies (Steam Game In Development)</div>
+    </a>
+  </div>
+
+  <div class="card">
+    <a class="link" href="https://lemuronmars.itch.io/treemino" target="_blank" rel="noopener">
+      <img class="thumb" loading="lazy"
+           src="images/treemino.png" alt="Treemino">
+      <div class="title">Treemino</div>
+    </a>
+  </div>
+
+  <div class="card">
+    <a class="link" href="https://lemuronmars.itch.io/greedy-cards" target="_blank" rel="noopener">
+      <img class="thumb" loading="lazy"
+           src="images/greedy_cards.png" alt="Greedy Cards">
+      <div class="title">Greedy Cards</div>
+    </a>
+  </div>
+
+  <div class="card">
+    <a class="link" href="https://lemuronmars.itch.io/bombs-and-tools" target="_blank" rel="noopener">
+      <img class="thumb" loading="lazy"
+           src="images/tools.png" alt="Bombs and Tools">
+      <div class="title">Bombs and Tools</div>
+    </a>
+  </div>
+
+</div>
+
+<!-- Playable Ads -->
+<h2>My Playable Ads</h2>
+<div class="grid playables">
+
+  <div class="card">
+    <div class="playable" data-src="playable1.html"
+         data-poster="https://via.placeholder.com/540x960?text=Playable+1">
+      <img class="poster" alt="Playable 1 preview" src="images/playable1.png" />
+      <div class="overlay">
+        <button class="load-btn">▶ Play</button>
+        <button class="secondary open-btn">Open in new tab</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="playable" data-src="playable2.html"
+         data-poster="https://via.placeholder.com/540x960?text=Playable+2">
+      <img class="poster" alt="Playable 2 preview" src="images/playable2.png" />
+      <div class="overlay">
+        <button class="load-btn">▶ Play</button>
+        <button class="secondary open-btn">Open in new tab</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="playable" data-src="playable3.html"
+         data-poster="https://via.placeholder.com/540x960?text=Playable+3">
+      <img class="poster" alt="Playable 3 preview" src="images/playable3.png" />
+      <div class="overlay">
+        <button class="load-btn">▶ Play</button>
+        <button class="secondary open-btn">Open in new tab</button>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+<script>
+  // lazy-load iframes, only one open at a time
+  const allPlayables = document.querySelectorAll('.playable');
+
+  allPlayables.forEach(block => {
+    block.querySelector('.load-btn').addEventListener('click', () => mountIframe(block));
+    block.querySelector('.open-btn').addEventListener('click', () =>
+      window.open(block.dataset.src, '_blank', 'noopener'));
+  });
+
+  function resetBlock(block){
+    block.dataset.mounted = '';
+    block.innerHTML = `
+      <div class="overlay">
+        <button class="load-btn">▶ Play</button>
+        <button class="secondary open-btn">Open in new tab</button>
+      </div>`;
+    block.querySelector('.load-btn').addEventListener('click', () => mountIframe(block));
+    block.querySelector('.open-btn').addEventListener('click', () =>
+      window.open(block.dataset.src, '_blank', 'noopener'));
+  }
+
+  function closeAllExcept(current){
+    allPlayables.forEach(b => { if(b !== current && b.dataset.mounted === '1') resetBlock(b); });
+  }
+
+  function mountIframe(block){
+    if(block.dataset.mounted === '1') return;
+    closeAllExcept(block);
+    const iframe = document.createElement('iframe');
+    iframe.loading = 'lazy';
+    iframe.src = block.dataset.src;
+    const unloadBtn = document.createElement('button');
+    unloadBtn.textContent = '⏏ Unload';
+    unloadBtn.className = 'secondary';
+    Object.assign(unloadBtn.style, {position:'absolute',right:'10px',top:'10px'});
+    unloadBtn.addEventListener('click', () => resetBlock(block));
+    block.innerHTML = '';
+    block.appendChild(iframe);
+    block.appendChild(unloadBtn);
+    block.dataset.mounted = '1';
+  }
+</script>
+
+</body>
+</html>
